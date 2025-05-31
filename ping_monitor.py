@@ -348,6 +348,19 @@ class PingMonitor:
         print(f"📈 Generating detailed report...")
         
         self.generate_report()
+        
+        # Show full file paths
+        current_dir = os.path.abspath(".")
+        log_path = os.path.join(current_dir, self.log_file)
+        report_path = os.path.join(current_dir, self.report_file)
+        
+        print("=" * 60)
+        print("📁 FILES GENERATED:")
+        print(f"📄 Log file: {log_path}")
+        print(f"📊 HTML report: {report_path}")
+        print("=" * 60)
+        print("💡 TIP: Open the HTML report in your browser to view the full analysis!")
+        print("💡 Share the HTML report with your ISP or IT support team.")
 
 def select_server():
     """Interactive server selection menu"""
