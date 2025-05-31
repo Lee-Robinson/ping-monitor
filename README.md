@@ -6,6 +6,8 @@ A cross-platform Python application that continuously monitors network connectiv
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/Lee-Robinson/ping-monitor)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
+![Ping Monitor Screenshot](https://github.com/user-attachments/assets/c0873a1a-5752-49f1-931f-f48efc292233)
+
 ## 🚀 Features
 
 - **Cross-platform**: Works on Windows, macOS, and Linux
