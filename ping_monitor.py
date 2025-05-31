@@ -105,15 +105,26 @@ class PingMonitor:
     
     def format_duration(self, hours):
         """Format duration for display"""
-        if hours >= 24:
+        if hours is None:
+            return "Continuous"
+        elif hours < 1:
+            minutes = int(hours * 60)
+            return f"{minutes} minute{'s' if minutes != 1 else ''}"
+        elif hours >= 24:
             days = int(hours // 24)
-            remaining_hours = int(hours % 24)
+            remaining_hours = hours % 24
             if remaining_hours == 0:
                 return f"{days} day{'s' if days != 1 else ''}"
+            elif remaining_hours < 1:
+                remaining_minutes = int(remaining_hours * 60)
+                return f"{days} day{'s' if days != 1 else ''} {remaining_minutes} minute{'s' if remaining_minutes != 1 else ''}"
             else:
-                return f"{days} day{'s' if days != 1 else ''} {remaining_hours} hour{'s' if remaining_hours != 1 else ''}"
+                return f"{days} day{'s' if days != 1 else ''} {remaining_hours:.1f} hour{'s' if remaining_hours != 1 else ''}"
         else:
-            return f"{int(hours)} hour{'s' if hours != 1 else ''}"
+            if hours == int(hours):
+                return f"{int(hours)} hour{'s' if hours != 1 else ''}"
+            else:
+                return f"{hours:.1f} hour{'s' if hours != 1 else ''}"
     
     def format_time_remaining(self, hours):
         """Format remaining time with hours and minutes"""
@@ -405,13 +416,16 @@ def select_server():
 def select_duration():
     """Interactive duration selection menu"""
     durations = [
+        (0.5, "30 minutes"),
         (1, "1 hour"),
         (2, "2 hours"), 
         (4, "4 hours"),
         (8, "8 hours"),
+        (12, "12 hours"),
         (24, "24 hours (1 day)"),
         (48, "48 hours (2 days)"),
-        (None, "Continuous (until stopped manually)")
+        (None, "Continuous (until stopped manually)"),
+        ("custom", "Custom duration")
     ]
     
     print("\n⏱️  TEST DURATION SELECTION")
@@ -425,11 +439,57 @@ def select_duration():
     
     while True:
         try:
-            choice = input("Choose option (1-7): ").strip()
-            if choice in ['1', '2', '3', '4', '5', '6', '7']:
+            choice = input("Choose option (1-10): ").strip()
+            if choice in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
                 return durations[int(choice)-1][0]
+            elif choice == '10':
+                # Custom duration input
+                print("\n📝 CUSTOM DURATION")
+                print("Enter duration in one of these formats:")
+                print("  - Minutes: '45m' or '45 minutes'")
+                print("  - Hours: '3h' or '3 hours'") 
+                print("  - Hours and minutes: '2h 30m' or '2.5h'")
+                print("  - Days: '1d' or '1 day'")
+                print()
+                
+                while True:
+                    custom_input = input("Enter custom duration: ").strip().lower()
+                    
+                    try:
+                        # Parse different formats
+                        if 'd' in custom_input and 'h' not in custom_input and 'm' not in custom_input:
+                            # Days only: "2d" or "2 days"
+                            days = float(custom_input.replace('d', '').replace('ays', '').replace('ay', '').strip())
+                            return days * 24
+                        elif 'h' in custom_input and 'm' in custom_input:
+                            # Hours and minutes: "2h 30m"
+                            parts = custom_input.replace('ours', '').replace('our', '').replace('inutes', '').replace('inute', '').replace('ins', '').replace('in', '')
+                            h_part = parts.split('h')[0].strip()
+                            m_part = parts.split('h')[1].replace('m', '').strip()
+                            hours = float(h_part) if h_part else 0
+                            minutes = float(m_part) if m_part else 0
+                            return hours + (minutes / 60)
+                        elif 'h' in custom_input:
+                            # Hours only: "3h" or "3.5h" or "3 hours"
+                            hours = float(custom_input.replace('h', '').replace('ours', '').replace('our', '').strip())
+                            return hours
+                        elif 'm' in custom_input:
+                            # Minutes only: "90m" or "90 minutes"
+                            minutes = float(custom_input.replace('m', '').replace('inutes', '').replace('inute', '').replace('ins', '').replace('in', '').strip())
+                            return minutes / 60
+                        else:
+                            # Try to parse as decimal hours
+                            hours = float(custom_input)
+                            if hours <= 0:
+                                print("❌ Duration must be greater than 0. Please try again.")
+                                continue
+                            return hours
+                    except ValueError:
+                        print("❌ Invalid format. Please try again.")
+                        print("Examples: '30m', '2h', '1.5h', '2h 30m', '1d'")
+                        continue
             else:
-                print("❌ Invalid choice. Please select 1-7.")
+                print("❌ Invalid choice. Please select 1-10.")
         except (ValueError, IndexError):
             print("❌ Invalid input. Please try again.")
 
