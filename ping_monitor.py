@@ -115,6 +115,33 @@ class PingMonitor:
         else:
             return f"{int(hours)} hour{'s' if hours != 1 else ''}"
     
+    def format_time_remaining(self, hours):
+        """Format remaining time with hours and minutes"""
+        if hours <= 0:
+            return "0 minutes"
+        
+        total_minutes = int(hours * 60)
+        hours_part = total_minutes // 60
+        minutes_part = total_minutes % 60
+        
+        if hours_part > 0 and minutes_part > 0:
+            return f"{hours_part}h {minutes_part}m"
+        elif hours_part > 0:
+            return f"{hours_part}h"
+        else:
+            return f"{minutes_part}m"
+    
+    def get_progress_bar(self, current_seconds, total_seconds, width=30):
+        """Generate a text progress bar"""
+        if total_seconds <= 0:
+            return "[Continuous Mode]"
+        
+        progress = min(current_seconds / total_seconds, 1.0)
+        filled_width = int(progress * width)
+        bar = "█" * filled_width + "░" * (width - filled_width)
+        percentage = int(progress * 100)
+        return f"[{bar}] {percentage}%"
+    
     def generate_report(self):
         """Generate an HTML report with statistics and drop details"""
         self.end_time = datetime.datetime.now()
@@ -279,12 +306,25 @@ class PingMonitor:
                 if self.total_pings % 60 == 0:
                     elapsed = datetime.datetime.now() - self.start_time
                     elapsed_str = str(elapsed).split('.')[0]
-                    remaining = ""
+                    
                     if self.duration:
-                        remaining_hours = self.duration - (elapsed.total_seconds() / 3600)
-                        if remaining_hours > 0:
-                            remaining = f" | {self.format_duration(remaining_hours)} remaining"
-                    print(f"📊 Status: {self.total_pings} pings, {self.dropped_pings} drops ({((self.total_pings-self.dropped_pings)/self.total_pings*100):.1f}% success) | Elapsed: {elapsed_str}{remaining}")
+                        # Calculate remaining time and progress
+                        elapsed_hours = elapsed.total_seconds() / 3600
+                        remaining_hours = max(0, self.duration - elapsed_hours)
+                        remaining_str = self.format_time_remaining(remaining_hours)
+                        
+                        # Progress bar
+                        total_seconds = self.duration * 3600
+                        current_seconds = elapsed.total_seconds()
+                        progress_bar = self.get_progress_bar(current_seconds, total_seconds)
+                        
+                        print(f"📊 {progress_bar}")
+                        print(f"📈 Status: {self.total_pings} pings, {self.dropped_pings} drops ({((self.total_pings-self.dropped_pings)/self.total_pings*100):.1f}% success)")
+                        print(f"⏱️  Elapsed: {elapsed_str} | Remaining: {remaining_str}")
+                    else:
+                        print(f"📊 Status: {self.total_pings} pings, {self.dropped_pings} drops ({((self.total_pings-self.dropped_pings)/self.total_pings*100):.1f}% success) | Elapsed: {elapsed_str}")
+                    
+                    print("-" * 60)
             
             else:
                 # Dropped ping
