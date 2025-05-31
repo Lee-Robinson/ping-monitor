@@ -350,13 +350,52 @@ class PingMonitor:
         
         # Generate final report
         elapsed = datetime.datetime.now() - self.start_time
-        print(f"\n" + "=" * 60)
-        print(f"📋 MONITORING COMPLETE")
-        print(f"⏱️  Total duration: {str(elapsed).split('.')[0]}")
-        print(f"📊 Total pings: {self.total_pings}")
-        print(f"❌ Dropped pings: {self.dropped_pings}")
-        print(f"✅ Success rate: {((self.total_pings-self.dropped_pings)/self.total_pings*100):.2f}%")
-        print(f"📈 Generating detailed report...")
+        
+        # Calculate final statistics
+        success_rate = ((self.total_pings - self.dropped_pings) / self.total_pings * 100) if self.total_pings > 0 else 0
+        loss_rate = (self.dropped_pings / self.total_pings * 100) if self.total_pings > 0 else 0
+        
+        # Determine test completion reason
+        completion_reason = "Completed Successfully" if self.check_duration() and self.duration else "Manually Stopped"
+        if self.duration and not self.check_duration():
+            completion_reason = "Interrupted"
+        
+        print(f"\n" + "=" * 70)
+        print(f"🏁 TEST COMPLETE")
+        print("=" * 70)
+        
+        # Test Summary Section
+        print(f"📊 TEST SUMMARY:")
+        print(f"   Server: {self.target_name} ({self.target})")
+        print(f"   Duration: {str(elapsed).split('.')[0]} (planned: {self.format_duration(self.duration) if self.duration else 'Continuous'})")
+        print(f"   Status: {completion_reason}")
+        print(f"   System: {platform.system()} {platform.release()}")
+        print()
+        
+        # Results Section
+        print(f"📈 RESULTS:")
+        print(f"   Total Pings: {self.total_pings:,}")
+        print(f"   Successful: {self.total_pings - self.dropped_pings:,}")
+        print(f"   Dropped: {self.dropped_pings:,}")
+        print(f"   Success Rate: {success_rate:.2f}%")
+        print(f"   Packet Loss: {loss_rate:.3f}%")
+        print(f"   Max Consecutive Drops: {self.max_consecutive_drops}")
+        print()
+        
+        # Network Quality Assessment
+        if success_rate >= 99.9:
+            quality = "🟢 EXCELLENT - No significant issues detected"
+        elif success_rate >= 99.0:
+            quality = "🟡 GOOD - Minor connectivity issues"
+        elif success_rate >= 95.0:
+            quality = "🟠 FAIR - Noticeable connectivity problems"
+        else:
+            quality = "🔴 POOR - Significant connectivity issues"
+        
+        print(f"🎯 NETWORK QUALITY: {quality}")
+        print()
+        
+        print(f"📈 Generating detailed reports...")
         
         self.generate_report()
         
@@ -365,13 +404,18 @@ class PingMonitor:
         log_path = os.path.join(current_dir, self.log_file)
         report_path = os.path.join(current_dir, self.report_file)
         
-        print("=" * 60)
-        print("📁 FILES GENERATED:")
-        print(f"📄 Log file: {log_path}")
-        print(f"📊 HTML report: {report_path}")
-        print("=" * 60)
-        print("💡 TIP: Open the HTML report in your browser to view the full analysis!")
-        print("💡 Share the HTML report with your ISP or IT support team.")
+        print()
+        print("=" * 70)
+        print("📁 REPORTS GENERATED:")
+        print(f"📄 Text Log: {log_path}")
+        print(f"🌐 HTML Report: {report_path}")
+        print("=" * 70)
+        print("💡 NEXT STEPS:")
+        print("   • Open the HTML report in your browser for detailed analysis")
+        print("   • Share the HTML report with your ISP or IT support team")
+        if self.dropped_pings > 0:
+            print("   • Use the timestamped data to correlate with network events")
+        print("=" * 70)
 
 def select_server():
     """Interactive server selection menu"""
