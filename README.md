@@ -8,137 +8,188 @@ A cross-platform Python application that continuously monitors network connectiv
 
 ![Ping Monitor Screenshot](https://github.com/user-attachments/assets/c0873a1a-5752-49f1-931f-f48efc292233)
 
-## 🚀 Features
 
-- **Cross-platform**: Works on Windows, macOS, and Linux
-- **Continuous monitoring**: Runs indefinitely until stopped
-- **Detailed logging**: Records every packet drop with precise timestamps
-- **Professional reports**: Generates HTML reports perfect for ISP communication
-- **Real-time statistics**: Shows live success rates and consecutive drop counts
-- **Graceful shutdown**: Ctrl+C stops monitoring and generates final report
-- **Customizable**: Easy to modify target IP, ping intervals, and file locations
+# Ping Monitor - Professional Network Connectivity Testing Tool
 
-## 📋 Requirements
+A cross-platform Python application with an interactive interface for monitoring network connectivity. Features server selection, duration controls, and professional reporting - perfect for documenting network issues to share with your ISP or IT team.
 
-- Python 3.6 or higher
-- Internet connection
-- Administrative/root privileges may be required on some systems for ping functionality
+[![Python Version](https://img.shields.io/badge/python-3.6%2B-blue.svg)](https://python.org)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/Lee-Robinson/ping-monitor)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-## 🔧 Installation
+## 🌟 Key Features
 
-### Option 1: Download and Run
-1. Download `ping_monitor.py` from this repository
-2. Open terminal/command prompt in the download location
-3. Run: `python3 ping_monitor.py` (macOS/Linux) or `python ping_monitor.py` (Windows)
+### 📋 Interactive Configuration
+- **Server Selection Menu**: Choose from 7 popular DNS servers or enter custom IP
+- **Duration Controls**: Set specific test duration (1-48 hours) or run continuously
+- **Configuration Summary**: Professional overview with confirmation before starting
+- **User-Friendly Interface**: Inspired by professional network testing tools like IPERF
 
-### Option 2: Clone Repository
+### 🔍 Comprehensive Monitoring
+- **Real-Time Tracking**: Live updates every minute with progress indicators
+- **Detailed Statistics**: Success rates, consecutive drops, and timing analysis
+- **Cross-Platform Support**: Automatic OS detection for Windows, macOS, and Linux
+- **Graceful Handling**: Proper completion whether duration reached or manually stopped
+
+### 📊 Professional Reporting
+- **Dual Output**: Text logs for technical review and HTML reports for presentations
+- **ISP-Ready Documentation**: Professional summaries formatted for technical support
+- **Visual Analytics**: Hourly drop analysis and statistical breakdowns
+- **Complete Audit Trail**: Configuration details and system information embedded
+
+## 🚀 Quick Start
+
+### Installation
 ```bash
 git clone https://github.com/Lee-Robinson/ping-monitor.git
 cd ping-monitor
 python3 ping_monitor.py
 ```
 
-## 🖥️ Platform-Specific Setup
+### Interactive Setup
+1. **Choose Your Server**
+   ```
+   🌍 SERVER SELECTION
+   1. Google DNS Primary (8.8.8.8) - Reliable, global coverage
+   2. Google DNS Secondary (8.8.4.4) - Backup Google DNS
+   3. Cloudflare DNS Primary (1.1.1.1) - Fast, privacy-focused
+   4. Cloudflare DNS Secondary (1.0.0.1) - Backup Cloudflare DNS
+   5. Quad9 DNS (9.9.9.9) - Security and privacy focused
+   6. OpenDNS (208.67.222.222) - Family-safe DNS filtering
+   7. OpenDNS Secondary (208.67.220.220) - Backup OpenDNS
+   8. Enter custom server
+   ```
+
+2. **Set Test Duration**
+   ```
+   ⏱️  TEST DURATION SELECTION
+   1. 1 hour
+   2. 2 hours
+   3. 4 hours
+   4. 8 hours
+   5. 24 hours (1 day)
+   6. 48 hours (2 days)
+   7. Continuous (until stopped manually)
+   ```
+
+3. **Review Configuration**
+   ```
+   ✅ CONFIGURATION SUMMARY
+   📡 Server: Google DNS Primary (8.8.8.8)
+   ⏱️  Duration: 4 hours
+   🔄 Interval: 1 second (continuous monitoring)
+   📄 Log file: ping_drops.log
+   📊 Report file: ping_report.html
+   ```
+
+## 📋 Platform-Specific Setup
 
 ### macOS
 ```bash
-# Install Python 3 if needed (using Homebrew)
+# Install Python 3 via Homebrew (if needed)
 brew install python
 
-# Run the monitor
+# Clone and run
+git clone https://github.com/Lee-Robinson/ping-monitor.git
+cd ping-monitor
 python3 ping_monitor.py
 ```
 
 ### Windows
 ```bash
-# Download Python from python.org if needed
-# Then run in Command Prompt or PowerShell
+# Download Python from python.org (if needed)
+# Clone via Git or download ZIP
+
+# Run in Command Prompt or PowerShell
+git clone https://github.com/Lee-Robinson/ping-monitor.git
+cd ping-monitor
 python ping_monitor.py
 ```
 
-### Linux
+### Linux (Ubuntu/Debian)
 ```bash
-# Install Python 3 if needed (Ubuntu/Debian)
-sudo apt update && sudo apt install python3
+# Install Python 3 (if needed)
+sudo apt update && sudo apt install python3 git
 
-# Run the monitor
+# Clone and run
+git clone https://github.com/Lee-Robinson/ping-monitor.git
+cd ping-monitor
 python3 ping_monitor.py
 ```
 
-## 🎯 Usage
+## 🎯 Real-World Usage Examples
 
-### Basic Usage
+### ISP Troubleshooting
 ```bash
-python3 ping_monitor.py
+# Document intermittent connection issues
+# Select: Cloudflare DNS Primary (1.1.1.1)
+# Duration: 8 hours (overnight monitoring)
+# Result: Professional report with timestamped drops for ISP support
 ```
 
-### What You'll See
-```
-============================================================
-  PING MONITOR - Network Connectivity Testing Tool
-============================================================
-Ping Monitor v1.0 - Cross-Platform Network Monitoring Tool
-System: Darwin 21.6.0
-Target: 8.8.8.8
-Logging drops to: ping_drops.log
-Report will be saved to: ping_report.html
-Press Ctrl+C to stop monitoring and generate report
-
-Status: 60 pings sent, 0 drops (100.0% success)
-✗ 14:23:45 - Packet drop detected (consecutive: 1)
-✗ 14:23:46 - Packet drop detected (consecutive: 2)
-✓ Connection restored after 2 drops
+### Business Network Monitoring
+```bash
+# Monitor office connectivity during business hours
+# Select: Google DNS Primary (8.8.8.8) 
+# Duration: 24 hours (full day analysis)
+# Result: Hourly breakdown showing peak problem times
 ```
 
-### Stopping the Monitor
-- Press `Ctrl+C` to stop monitoring
-- The application will generate a final report automatically
-- Files are saved in the same directory where you run the script
-
-## 📊 Output Files
-
-The application creates two files:
-
-### 1. `ping_drops.log` (Text Log)
-```
-Ping Monitor Started - 2025-05-31 14:20:15
-Target: 8.8.8.8
-System: Darwin 21.6.0
---------------------------------------------------
-2025-05-31 14:23:45 - Packet drop detected (consecutive: 1)
-2025-05-31 14:23:46 - Packet drop detected (consecutive: 2)
+### Home Network Analysis
+```bash
+# Check connection stability for remote work
+# Select: Quad9 DNS (9.9.9.9)
+# Duration: 4 hours (during video conferencing)
+# Result: Evidence of drops affecting work productivity
 ```
 
-### 2. `ping_report.html` (Professional Report)
-- Complete statistics and analysis
-- Hourly drop patterns
-- System information
-- ISP-ready summary section
-- Professional formatting for technical support
+## 📊 Understanding Your Results
 
-## ⚙️ Customization
+### Live Monitoring Display
+```
+📊 Status: 3600 pings, 12 drops (99.7% success) | Elapsed: 1:00:00 | 3 hours remaining
+❌ 14:23:45 - Packet drop detected (consecutive: 1)
+✅ Connection restored after 2 drops
+```
 
-You can modify the script parameters by editing the `main()` function:
+### Success Rate Guidelines
+- **99.9%+**: Excellent connection quality
+- **99.0-99.9%**: Good connection with minor issues  
+- **95.0-99.0%**: Noticeable problems - contact ISP
+- **<95.0%**: Significant issues requiring immediate attention
 
+### Report Files Generated
+- **`ping_drops.log`**: Technical log with raw timestamps
+- **`ping_report.html`**: Professional report for sharing with support teams
+
+## 🔧 Advanced Configuration
+
+### Custom Target Servers
 ```python
-monitor = PingMonitor(
-    target="8.8.8.8",                    # Change ping target
-    interval=1,                          # Seconds between pings
-    log_file="my_ping_drops.log",        # Custom log filename
-    report_file="my_ping_report.html"    # Custom report filename
-)
+# Edit the script to add your preferred servers
+# Or select option 8 for custom IP entry during runtime
 ```
 
-### Common Customizations
-- **Different target**: Change to your ISP's DNS or another reliable server
-- **Faster monitoring**: Set `interval=0.5` for ping every 500ms
-- **Slower monitoring**: Set `interval=5` for ping every 5 seconds
-- **Custom file location**: Use full paths like `"/Users/username/Desktop/ping_log.txt"`
+### Output File Locations
+Files are saved in the directory where you run the script:
+```bash
+ls -la
+# Shows: ping_drops.log, ping_report.html, plus original files
+```
 
-## 🔍 Troubleshooting
+### Running in Background (Linux/macOS)
+```bash
+# Run in background with output logging
+nohup python3 ping_monitor.py > monitor_output.log 2>&1 &
 
-### "Permission Denied" Error
-Some systems require elevated privileges for ping:
+# Check process
+ps aux | grep ping_monitor
+```
+
+## 🛠️ Troubleshooting
+
+### Permission Issues
+Some systems require elevated privileges:
 ```bash
 # macOS/Linux
 sudo python3 ping_monitor.py
@@ -147,49 +198,12 @@ sudo python3 ping_monitor.py
 python ping_monitor.py
 ```
 
-### "Python Not Found" Error
+### Python Not Found
 - **Windows**: Download from [python.org](https://python.org/downloads/)
 - **macOS**: Install via Homebrew: `brew install python`
 - **Linux**: Install via package manager: `sudo apt install python3`
 
-### Script Doesn't Stop with Ctrl+C
+### Script Won't Stop
+- Try `Ctrl+C` (recommended - generates final report)
 - Try `Ctrl+Z` then `kill %1` (Linux/macOS)
-- Close terminal window as last resort
-- Files should still be generated upon exit
-
-## 📈 Understanding the Results
-
-### Success Rate Guidelines
-- **99.9%+**: Excellent connection
-- **99.0-99.9%**: Good connection with minor issues
-- **95.0-99.0%**: Noticeable issues, report to ISP
-- **<95.0%**: Significant problems requiring immediate ISP attention
-
-### Using Results with Your ISP
-1. Run monitor during problem periods (overnight, peak hours)
-2. Collect at least 1-2 hours of data showing issues
-3. Share the HTML report with your ISP support
-4. Reference specific timestamps and drop patterns
-5. Include system information from the report
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit pull requests or open issues for:
-- Bug fixes
-- Feature enhancements
-- Platform-specific improvements
-- Documentation updates
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Built for network troubleshooting and ISP communication
-- Inspired by the need for concrete evidence of intermittent connectivity issues
-- Cross-platform compatibility for maximum usability
-
----
-
-**Happy monitoring!** 🖥️📡
+- Close terminal window (last resort)
